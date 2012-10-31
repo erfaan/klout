@@ -15,6 +15,9 @@ Complete documentation is available at:
 ====================
 Quickstart
 ====================
+Install the PyPi package::
+    
+    pip install Klout
 
 This short example shows how to get a kloutId first and fetch user's score using that kloutId::
 
