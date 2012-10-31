@@ -1,6 +1,6 @@
 *.pyc
-*~
 dist
 build
+_build
 klout.sublime*
 key
