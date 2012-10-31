@@ -2,13 +2,31 @@
 
 """
 A minimalist klout API interface. Use of this API 
-requires klout developer key. You can get registered and
+requires klout *developer key*. You can get registered and
 get a key at
 
     <http://klout.com/s/developers/v2>
 
+====================
+Quickstart
+====================
 
-https://github.com/erfaan/klout
+This short example shows how to get a kloutId first and fetch user's score using that kloutId::
+
+    from klout import *
+    
+    # Make the Klout object
+    k = Klout('YOUR_KEY_HERE')
+
+    # Get kloutId of the user by inputting a twitter screenName
+    kloutId = k.identity.klout(screenName="erfaan").get('id')
+
+    # Get klout score of the user
+    score = k.user.score(kloutId=kloutId).get('score')
+
+    print "User's klout score is: %s" % (score) 
+
+
 """
 
 try:
@@ -151,7 +169,7 @@ class KloutCall( object ):
 
 class Klout(KloutCall):
     """
-    A minimalist yetfully featured klout API interface. 
+    A minimalist yet fully featured klout API interface. 
 
     Get RESTful data by accessing members of this class. The result
     is decoded python objects (dicts and lists).
@@ -162,52 +180,56 @@ class Klout(KloutCall):
 
     Examples:
 
+    We need a *developer key* to call any Klout API function
+
     >>> f = open('key')
     >>> key= f.readline().strip()
     >>> f.close()
     >>> k = Klout(key)
+    
+    **Identity Resource**
+    
+    All calls to the Klout API now require a unique kloutId. 
+    To facilitate this, you must first translate a {network}/{networkId} into a kloutId.
+    
+    * Get kloutId by twitter id
 
-    # Identity Resource
-    #
-    # All calls to the Klout API now require a unique kloutId. 
-    # To facilitate this, you must first translate a
-    # {network}/{networkId} into a kloutId.
-
-    # Get kloutId by twitter id
     >>> k.identity.klout(tw="11158872")
     {u'id': u'11747', u'network': u'ks'}
+    
+    * Get kloutId by twitter screenName
 
-    # Get kloutId by twitter screenName
     >>> k.identity.klout(screenName="erfaan")
     {u'id': u'11747', u'network': u'ks'}
+    
+    * Get kloutId by google plus id
 
-    # Get kloutId by google plus id
     >>> k.identity.klout(gp="112975106809988327760")
     {u'id': u'11747', u'network': u'ks'}
+    
+    **User Resource**
 
-    # User Resource
-    # 
-    # Once we have kloutId, we can use this resource to 
-    # lookup user's score, influcent or topics
+    Once we have kloutId, we can use this resource to lookup user's score, influcent or topics
 
-    # Get user score
+    * Get user score
+
     >>> k.user.score(kloutId='11747') # doctest: +ELLIPSIS
     ...                               # doctest: +NORMALIZE_WHITESPACE
     {u'score': ..., u'scoreDelta': {u'dayChange': ..., u'monthChange': ...}} 
 
-    # Get user influences
+    * Get user influences
+
     >>> k.user.influence(kloutId='11747') # doctest: +ELLIPSIS
     ...                                   # doctest: +NORMALIZE_WHITESPACE
     {u'myInfluencersCount': ..., u'myInfluenceesCount': ..., \
     u'myInfluencers': [...], u'myInfluencees': [...]}
 
 
-    # Get user topics
+    * Get user topics
+
     >>> k.user.topics(kloutId='11747') # doctest: +ELLIPSIS
     ...                                # doctest: +NORMALIZE_WHITESPACE
-    [...]
-
-
+    [{u'imageUrl': ..., u'slug': ..., u'displayName': ..., u'id': ..., u'name': ...}, ...]
 
     """
 
@@ -224,3 +246,5 @@ class Klout(KloutCall):
             self, key=key, domain = domain, 
             api_version = api_version,
             callable_cls=KloutCall, uriparts=())
+
+__all__ = ["Klout", "KloutError", "KloutHTTPError"]
