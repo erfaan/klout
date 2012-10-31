@@ -8,6 +8,10 @@ get a key at
 
     <http://klout.com/s/developers/v2>
 
+Complete documentation is available at: 
+	
+	<https://klout.readthedocs.org/en/latest/>
+
 ====================
 Quickstart
 ====================
