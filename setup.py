@@ -10,7 +10,7 @@ setup(
     url='http://pypi.python.org/pypi/klout/',
     license='LICENSE.txt',
     description='Minimalist Klout API interface.',
-    long_description=open('README.rst').read(),
+    long_description=open('README').read(),
     classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
