@@ -16,7 +16,7 @@ Complete documentation is available at:
 Design Philosoph
 ==============================
 
-See :doc:`docs/design-philosophy`
+See `Design Philosophy <https://github.com/erfaan/klout/blob/master/docs/design-philosophy.rst>`_
 
 ====================
 Quickstart
