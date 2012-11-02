@@ -40,6 +40,9 @@ This short example shows how to get a kloutId first and fetch user's score using
 
     print "User's klout score is: %s" % (score) 
 
+    # Optionally a timeout parameter (seconds) can also be sent with all calls
+    score = k.user.score(kloutId=kloutId, timeout=5).get('score')
+
 ==================
 License
 ==================
