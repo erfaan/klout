@@ -12,6 +12,12 @@ Complete documentation is available at:
 	
 	<https://klout.readthedocs.org/en/latest/>
 
+==============================
+Design Philosoph
+==============================
+
+See :doc:`design-philosophy`
+
 ====================
 Quickstart
 ====================
