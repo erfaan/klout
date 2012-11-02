@@ -1,5 +1,11 @@
 import doctest
+import socket
 import unittest
+
+try:
+    import urllib.error as urllib_error
+except ImportError:
+    import urllib2 as urllib_error
 
 from klout import *
 
@@ -107,6 +113,22 @@ class TestKloutUser(unittest.TestCase):
             for k, v in topic.items():
                 self.assertIn(k, ['imageUrl', 'slug', 'displayName', 'id', 'name'])
 
+
+class TestTimeout(unittest.TestCase):
+    
+    def setUp(self):
+        f = open('key')
+        self.key= f.readline().strip()
+        f.close()
+    
+    def test_timeout(self):
+        k = Klout(self.key)
+        result = k.user.score(kloutId=11747, timeout=60)
+        self.assertIn('score', result)
+        
+        with self.assertRaises(urllib_error.URLError) as er:
+            result = k.user.score(kloutId=11747, timeout=0.001)
+        self.assertIsInstance(er.exception.reason, socket.timeout)
 
 def load_tests(loader, tests, ignore):
     tests.addTests(doctest.DocTestSuite(api))

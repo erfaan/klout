@@ -29,6 +29,9 @@ This short example shows how to get a kloutId first and fetch user's score using
     score = k.user.score(kloutId=kloutId).get('score')
 
     print "User's klout score is: %s" % (score) 
+    
+    # Optionally a timeout parameter (seconds) can also be sent with all calls
+    score = k.user.score(kloutId=kloutId, timeout=5).get('score')
 
 
 """
@@ -127,6 +130,8 @@ class KloutCall( object ):
         if self.key:
             params['key'] = self.key
         
+        timeout = kwargs.pop('timeout', None)
+        
         # append input variables
         for k, v in kwargs.items():
             if k == 'screenName':
@@ -152,11 +157,14 @@ class KloutCall( object ):
         
         req = urllib_request.Request(uriBase, headers=headers)
         
-        return self._handle_response(req, uri)
+        return self._handle_response(req, uri, timeout)
     
-    def _handle_response(self, req, uri):
+    def _handle_response(self, req, uri, timeout=None):
+        kwargs = {}
+        if timeout:
+            kwargs['timeout'] = timeout
         try:
-            handle = urllib_request.urlopen(req)
+            handle = urllib_request.urlopen(req, **kwargs)
             if handle.info().get('Content-Encoding') == 'gzip':
                 # Handle gzip decompression
                 buf = StringIO(handle.read())
