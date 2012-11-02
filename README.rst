@@ -16,7 +16,7 @@ Complete documentation is available at:
 Design Philosoph
 ==============================
 
-See :doc:`design-philosophy`
+See :doc:`docs/design-philosophy`
 
 ====================
 Quickstart
