@@ -43,5 +43,5 @@ This short example shows how to get a kloutId first and fetch user's score using
 ==================
 License
 ==================
-MIT License. See LICENSE.txt
+MIT License. See :doc:`LICENSE.txt`
 Copyright (c) 2012 Irfan Ahmad
