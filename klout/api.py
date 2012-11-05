@@ -93,13 +93,14 @@ class KloutCall( object ):
 
     def __init__(self, key, domain, 
         callable_cls, api_version = "", 
-        uri = "", uriparts = None):
+        uri = "", uriparts = None, secure=False):
         
         self.key = key
         self.domain = domain
         self.api_version = api_version
         self.callable_cls = callable_cls
         self.uri = uri
+        self.secure = secure
         self.uriparts = uriparts
 
     def __getattr__(self, k):
@@ -110,8 +111,8 @@ class KloutCall( object ):
                 return self.callable_cls(
                     key=self.key, domain=self.domain,
                     api_version=self.api_version,
-                    callable_cls=self.callable_cls, uriparts=self.uriparts \
-                        + (arg,))
+                    callable_cls=self.callable_cls, secure=self.secure,
+                    uriparts=self.uriparts + (arg,))
             if k == "_":
                 return extend_call
             else:
@@ -151,8 +152,13 @@ class KloutCall( object ):
         if len(params) > 0:
             uri += '?' + urllib_parse.urlencode(params)
         
-        uriBase = "http://%s/%s" % (
-            self.domain, uri)
+        secure_str = ''
+        if self.secure:
+            secure_str = 's'
+        
+        uriBase = "http%s://%s/%s" % (
+            secure_str, self.domain, uri)
+        
         headers = {'Accept-Encoding': 'gzip'}
         
         req = urllib_request.Request(uriBase, headers=headers)
@@ -197,7 +203,12 @@ class Klout(KloutCall):
     >>> f = open('key')
     >>> key= f.readline().strip()
     >>> f.close()
-    >>> k = Klout(key)
+    
+    By default all communication with Klout API is not secure (HTTP).
+    It can be made secure (HTTPS) by passing an optional `secure=True`
+    to `Klout` constructor like this:
+    
+    >>> k = Klout(key, secure=True)
     
     **Identity Resource**
     
@@ -246,9 +257,23 @@ class Klout(KloutCall):
     """
 
     def __init__(
-        self, key, domain="api.klout.com",
+        self, key, domain="api.klout.com", secure=False,
         api_version=_DEFAULT):
         """
+        Create a new klout API connector.
+
+        Pass a `key` parameter to use::
+
+            k = Klout(key='YOUR_KEY_HERE')
+
+        `domain` lets you change the domain you are connecting. By
+        default it's `api.klout.com`
+
+        If `secure` is True you will connect with HTTPS instead of
+        HTTP.
+
+        `api_version` is used to set the base uri. By default it's
+        'v2'.
         """
 
         if api_version is _DEFAULT:
@@ -257,6 +282,7 @@ class Klout(KloutCall):
         KloutCall.__init__(
             self, key=key, domain = domain, 
             api_version = api_version,
-            callable_cls=KloutCall, uriparts=())
+            callable_cls=KloutCall, secure=secure,
+            uriparts=())
 
 __all__ = ["Klout", "KloutError", "KloutHTTPError"]

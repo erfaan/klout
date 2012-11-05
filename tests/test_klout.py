@@ -130,6 +130,21 @@ class TestTimeout(unittest.TestCase):
             result = k.user.score(kloutId=11747, timeout=0.001)
         self.assertIsInstance(er.exception.reason, socket.timeout)
 
+
+class TestSecure(unittest.TestCase):
+    
+    def setUp(self):
+        f = open('key')
+        self.key= f.readline().strip()
+        f.close()
+    
+    def test_secure(self):
+        k = Klout(self.key, secure=True)
+        result = k.user.score(kloutId=11747)
+        self.assertIn('score', result)
+        
+
+
 def load_tests(loader, tests, ignore):
     tests.addTests(doctest.DocTestSuite(api))
     return tests

@@ -40,6 +40,10 @@ This short example shows how to get a kloutId first and fetch user's score using
 
     print "User's klout score is: %s" % (score) 
 
+    # By default all communication is not secure (HTTP). An optional secure parameter
+    # can be sepcified for secure (HTTPS) communication
+    k = Klout('YOUR_KEY_HERE', secure=True)
+
     # Optionally a timeout parameter (seconds) can also be sent with all calls
     score = k.user.score(kloutId=kloutId, timeout=5).get('score')
 
