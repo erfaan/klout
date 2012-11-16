@@ -252,7 +252,7 @@ class Klout(KloutCall):
 
     >>> k.user.topics(kloutId='11747') # doctest: +ELLIPSIS
     ...                                # doctest: +NORMALIZE_WHITESPACE
-    [{u'imageUrl': ..., u'slug': ..., u'displayName': ..., u'id': ..., u'name': ...}, ...]
+    [{u'displayName': ..., u'name': ..., u'imageUrl': ..., u'id': ..., u'topicType': {...}, u'slug': ...}, ...]
 
     """
 

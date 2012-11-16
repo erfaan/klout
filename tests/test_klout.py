@@ -105,13 +105,13 @@ class TestKloutUser(unittest.TestCase):
         self.assertIsInstance(result, list)
         for topic in result:
             for k, v in topic.items():
-                self.assertIn(k, ['imageUrl', 'slug', 'displayName', 'id', 'name'])
+                self.assertIn(k, ['imageUrl', 'slug', 'displayName', 'id', 'name', 'topicType'])
 
         result = klout.user.topics(kloutId='11747')
         self.assertIsInstance(result, list)
         for topic in result:
             for k, v in topic.items():
-                self.assertIn(k, ['imageUrl', 'slug', 'displayName', 'id', 'name'])
+                self.assertIn(k, ['displayName', 'imageUrl', 'slug', 'id', 'name', 'topicType'])
 
 
 class TestTimeout(unittest.TestCase):
