@@ -1,3 +1,4 @@
+v0.1.3, 2012-11-18 -- Added support for python2.5
 v0.1.2, 2012-11-05 -- Added optional secure parameter for HTTPS communication.
 v0.1.1, 2012-11-02 -- Added optional 'tiemout' parameter for all calls. 
 v0.1.0, 2012-10-30 -- Initial Release. 

@@ -57,6 +57,7 @@ try:
 except ImportError:
     import simplejson as json
 
+import socket
 
 class _DEFAULT(object):
     pass
@@ -168,9 +169,9 @@ class KloutCall( object ):
     def _handle_response(self, req, uri, timeout=None):
         kwargs = {}
         if timeout:
-            kwargs['timeout'] = timeout
+            socket.setdefaulttimeout(timeout)
         try:
-            handle = urllib_request.urlopen(req, **kwargs)
+            handle = urllib_request.urlopen(req)
             if handle.info().get('Content-Encoding') == 'gzip':
                 # Handle gzip decompression
                 buf = StringIO(handle.read())

@@ -19,7 +19,7 @@ import sys, os
 sys.path.insert(0, os.path.abspath('../'))
 
 # -- General configuration -----------------------------------------------------
-from klout import __release__, __version__
+from klout._version import __release__, __version__
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.0'
 
