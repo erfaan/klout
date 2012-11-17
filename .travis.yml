@@ -7,7 +7,7 @@ python:
 env: 
   - secure: "Sez9CT8tcFmdUiHbdbkZfk+6ZRVcNqdoj80ISmAQNRT5dbgbUA55peo1PMg+\nZYDmVKwSb+u+cDgKXdGv4Bt2ww8vtM6NYsjIQz95PwhnBjEM40T6tXFQ6GJx\nqgvJSStf/OWlLIHymY3K9St/aj0xMVbyWR+r398yLj34AWCF0dQ="
 
-before_install: python _travis_setup.py && pip install requirements.txt
+before_install: python _travis_setup.py && pip install -r requirements.txt
 install: python setup.py install
 before_script: echo $KEY > key
 script: nosetests --with-doctest
