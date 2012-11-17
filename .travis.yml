@@ -6,6 +6,6 @@ python:
   - "2.5"
 env: 
   - secure: "Sez9CT8tcFmdUiHbdbkZfk+6ZRVcNqdoj80ISmAQNRT5dbgbUA55peo1PMg+\nZYDmVKwSb+u+cDgKXdGv4Bt2ww8vtM6NYsjIQz95PwhnBjEM40T6tXFQ6GJx\nqgvJSStf/OWlLIHymY3K9St/aj0xMVbyWR+r398yLj34AWCF0dQ="
-before_script: echo $KEY > key
+before_script: echo $KEY > key && python setup.py install
 script: nosetests --with-doctest
 after_script: rm key

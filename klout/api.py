@@ -182,7 +182,8 @@ class KloutCall( object ):
             
             res = json.loads(data.decode('utf8'))
             return res
-        except urllib_error.HTTPError, e:
+        except urllib_error.HTTPError:
+            _, e, _ = sys.exc_info()
             raise KloutHTTPError( e, uri)
 
 

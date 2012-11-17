@@ -1,5 +1,6 @@
 from setuptools import setup
 import re
+import sys
 
 verstr = "unknown"
 try:
@@ -13,6 +14,10 @@ else:
         verstr = mo.group(1)
     else:
         raise RuntimeError("unable to find version in yourpackage/_version.py")
+
+INSTALL_REQUIRES = []
+if sys.version_info < (2 , 6):
+    INSTALL_REQUIRES = ['simplejson']
 
 
 setup(
@@ -37,6 +42,6 @@ setup(
         'Programming Language :: Python :: 3',
         'Topic :: Communications',
     ],
-    install_requires=['simplejson'],
+    install_requires=INSTALL_REQUIRES,
     tests_require=['nose', 'unittest2']
 )
