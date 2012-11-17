@@ -1,6 +1,6 @@
 import doctest
 import socket
-import unittest
+import unittest2
 
 try:
     import urllib.error as urllib_error
@@ -10,13 +10,12 @@ except ImportError:
 from klout import *
 
 
-class TestKlout(unittest.TestCase):
+class TestKlout(unittest2.TestCase):
     def test_klout(self):
-        with self.assertRaises(TypeError):
-            k = Klout()
+        self.assertRaises(TypeError, Klout)
 
 
-class TestKloutIdentity(unittest.TestCase):
+class TestKloutIdentity(unittest2.TestCase):
 
     def setUp(self):
         f = open('key')
@@ -70,7 +69,7 @@ class TestKloutIdentity(unittest.TestCase):
         self.assertIn('network', result)
 
 
-class TestKloutUser(unittest.TestCase):
+class TestKloutUser(unittest2.TestCase):
 
     def setUp(self):
         f = open('key')
@@ -114,7 +113,7 @@ class TestKloutUser(unittest.TestCase):
                 self.assertIn(k, ['displayName', 'imageUrl', 'slug', 'id', 'name', 'topicType'])
 
 
-class TestTimeout(unittest.TestCase):
+class TestTimeout(unittest2.TestCase):
     
     def setUp(self):
         f = open('key')
@@ -131,7 +130,7 @@ class TestTimeout(unittest.TestCase):
         self.assertIsInstance(er.exception.reason, socket.timeout)
 
 
-class TestSecure(unittest.TestCase):
+class TestSecure(unittest2.TestCase):
     
     def setUp(self):
         f = open('key')
@@ -145,4 +144,4 @@ class TestSecure(unittest.TestCase):
         
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest2.main()
