@@ -22,4 +22,5 @@ setup(
         'Programming Language :: Python :: 3',
         'Topic :: Communications',
     ],
+    requires=['simplejson'],
 )
