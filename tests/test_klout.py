@@ -1,3 +1,4 @@
+from __future__ import with_statement
 import doctest
 import socket
 import unittest2
@@ -12,7 +13,8 @@ from klout import *
 
 class TestKlout(unittest2.TestCase):
     def test_klout(self):
-        self.assertRaises(TypeError, Klout)
+        with self.assertRaises(TypeError):
+            k = Klout()
 
 
 class TestKloutIdentity(unittest2.TestCase):
