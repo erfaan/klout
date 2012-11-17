@@ -19,6 +19,9 @@ INSTALL_REQUIRES = []
 if sys.version_info < (2 , 6):
     INSTALL_REQUIRES = ['simplejson']
 
+TEST_REQUIRE = ['nose', 'unittest2']
+if sys.version_info >= (3, 0):
+    TEST_REQUIRE = ['nose', 'unittest2py3k']
 
 setup(
     name='Klout',
@@ -43,5 +46,5 @@ setup(
         'Topic :: Communications',
     ],
     install_requires=INSTALL_REQUIRES,
-    tests_require=['nose', 'unittest2']
+    tests_require=TEST_REQUIRE
 )
