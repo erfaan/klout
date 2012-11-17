@@ -10,6 +10,6 @@ env:
 before_install: python _travis_setup.py && pip install -r requirements.txt
 install: python setup.py install
 before_script: echo $KEY > key
-script: nosetests --with-doctest
+script: nosetests --with-doctest -d
 after_script: 
   - rm key requirements.txt
