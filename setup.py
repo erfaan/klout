@@ -23,8 +23,6 @@ TEST_REQUIRE = ['nose', 'unittest2']
 if sys.version_info >= (3, 0):
     TEST_REQUIRE = ['nose', 'unittest2py3k']
 
-INSTALL_REQUIRES += TEST_REQUIRE
-
 setup(
     name='Klout',
     version=verstr,
@@ -48,4 +46,5 @@ setup(
         'Topic :: Communications',
     ],
     install_requires=INSTALL_REQUIRES,
+    tests_require=TEST_REQUIRE
 )
