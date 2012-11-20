@@ -1,5 +1,7 @@
 Welcome to Klout API's documentation!
 =====================================
+.. image:: https://secure.travis-ci.org/erfaan/klout.png?branch=master
+   :target: https://travis-ci.org/erfaan/klout
 
 .. toctree::
    :maxdepth: 2

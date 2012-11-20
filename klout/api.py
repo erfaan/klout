@@ -7,6 +7,8 @@ get a key at
 
     <http://klout.com/s/developers/v2>
 
+Supports Python >= 2.5 and Python 3
+
 ====================
 Quickstart
 ====================

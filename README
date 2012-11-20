@@ -1,6 +1,8 @@
 ==================
 Klout API
 ==================
+.. image:: https://secure.travis-ci.org/erfaan/klout.png?branch=master
+   :target: https://travis-ci.org/erfaan/klout
 
 A minimalist klout API interface. Use of this API 
 requires klout *developer key*. You can get registered and
