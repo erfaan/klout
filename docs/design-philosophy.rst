@@ -49,9 +49,9 @@ Designing python functions
 
 After generalizing the API URLs, next step is to make a generalized pythonic function calls:
 
-Here is what I pruopose::
+Here is what I propose::
 
-  k = Kluot(key='xxxxxxxxxxxxxxxxxxxxxxxx')
+  k = Klout(key='xxxxxxxxxxxxxxxxxxxxxxxx')
   k.<resource>.<action>(<input_name>=<input_value>)
 
 --------------------------------------------------
@@ -73,7 +73,7 @@ Here are all possible combinations of the URLs. Lets try to map them to our gene
 
   Code Example::
 
-    k = Kluot(key='xxxxxxxxxxxxxxxxxxxxxxxx')
+    k = Klout(key='xxxxxxxxxxxxxxxxxxxxxxxx')
     k.identity.klout(gp='112975106809988327760') 
     # Note that we replaced the empty action with klout as we want to be consistent
 
@@ -91,7 +91,7 @@ Here are all possible combinations of the URLs. Lets try to map them to our gene
 
   Code Example::
 
-    k = Kluot(key='xxxxxxxxxxxxxxxxxxxxxxxx')
+    k = Klout(key='xxxxxxxxxxxxxxxxxxxxxxxx')
     k.identity.klout(tw='11158872') 
     # Note that we replaced the empty action with klout as we want to be consistent
 
@@ -109,7 +109,7 @@ Here are all possible combinations of the URLs. Lets try to map them to our gene
 
   Code Example::
 
-    k = Kluot(key='xxxxxxxxxxxxxxxxxxxxxxxx')
+    k = Klout(key='xxxxxxxxxxxxxxxxxxxxxxxx')
     k.identity.klout(screenName='erfaan') 
     # Note that we replaced the empty action with klout as we want to be consistent
     # Also the input parameters query string are used as function parameters. (again consistency)
@@ -128,7 +128,7 @@ Here are all possible combinations of the URLs. Lets try to map them to our gene
 
   Code Example::
 
-    k = Kluot(key='xxxxxxxxxxxxxxxxxxxxxxxx')
+    k = Klout(key='xxxxxxxxxxxxxxxxxxxxxxxx')
     k.identity.gp(klout='11747') 
 
 * http://api.klout.com/v2/identity.json/klout/11747/tw?key=xxxxxxxxxxxxxxxxxxxxxxxx
@@ -145,7 +145,7 @@ Here are all possible combinations of the URLs. Lets try to map them to our gene
 
   Code Example::
 
-    k = Kluot(key='xxxxxxxxxxxxxxxxxxxxxxxx')
+    k = Klout(key='xxxxxxxxxxxxxxxxxxxxxxxx')
     k.identity.tw(klout='11747') 
 
 * https://api.klout.com/v2/user.json/11747/score?key=xxxxxxxxxxxxxxxxxxxxxxxx
@@ -162,7 +162,7 @@ Here are all possible combinations of the URLs. Lets try to map them to our gene
 
   Code Example::
 
-    k = Kluot(key='xxxxxxxxxxxxxxxxxxxxxxxx')
+    k = Klout(key='xxxxxxxxxxxxxxxxxxxxxxxx')
     k.user.scrore(kloutId='11747') 
 
 * https://api.klout.com/v2/user.json/11747/influence?key=xxxxxxxxxxxxxxxxxxxxxxxx
@@ -179,7 +179,7 @@ Here are all possible combinations of the URLs. Lets try to map them to our gene
 
   Code Example::
 
-    k = Kluot(key='xxxxxxxxxxxxxxxxxxxxxxxx')
+    k = Klout(key='xxxxxxxxxxxxxxxxxxxxxxxx')
     k.user.influence(kloutId='11747') 
 
 * https://api.klout.com/v2/user.json/11747/topics?key=xxxxxxxxxxxxxxxxxxxxxxxx
@@ -196,6 +196,6 @@ Here are all possible combinations of the URLs. Lets try to map them to our gene
 
   Code Example::
 
-    k = Kluot(key='xxxxxxxxxxxxxxxxxxxxxxxx')
+    k = Klout(key='xxxxxxxxxxxxxxxxxxxxxxxx')
     k.user.topics(kloutId='11747') 
 
