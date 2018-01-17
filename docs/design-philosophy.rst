@@ -20,7 +20,7 @@ API URLs can be generalized in a way.
 * <resource>: Currently there are only 2 resources *identity* and *user*
 * <format>: Klout no longer supports *XML*. Only *json* is supported.
 * <input_name>: (Optional) Name of the field to query. Required only when the input field is not *Primary Key*.
-  Poissble values for *identity* resource are:
+  Possible values for *identity* resource are:
 
   * tw - Twitter
   * klout - (Written as ks in official Klout API documentation but it doesn't work)
