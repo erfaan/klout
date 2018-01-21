@@ -14,6 +14,6 @@ env:
 before_install: python _travis_setup.py && pip install -r requirements.txt
 install: python setup.py install
 before_script: echo $KEY > key
-script: coverage run --source=klout setup.py tests
+script: coverage run --source=klout setup.py test
 after_script: 
   - rm key requirements.txt
