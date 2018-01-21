@@ -2,6 +2,10 @@ language: python
 python:
   - "2.6"
   - "2.7"
+  - "3.1"
+  - "3.2"
+  - "3.3"
+  - "3.4"
   - "3.5"
   - "3.6"
 env: 
@@ -10,6 +14,6 @@ env:
 before_install: python _travis_setup.py && pip install -r requirements.txt
 install: python setup.py install
 before_script: echo $KEY > key
-script: coverage run --source=klout setup.py test
+script: coverage run --source=klout setup.py tests
 after_script: 
   - rm key requirements.txt
