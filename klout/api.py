@@ -164,7 +164,7 @@ class KloutCall(object):
                 uriparts.append(str(uripart))
 
         uri = '/'.join(uriparts)
-        if params > 0:
+        if params:
             uri += '?' + urllib_parse.urlencode(params)
 
         secure_str = ''
