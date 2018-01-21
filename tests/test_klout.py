@@ -2,6 +2,7 @@
 Unit tests for Klout API
 """
 from __future__ import with_statement
+import time
 import unittest2
 
 from klout import Klout, KloutHTTPError
@@ -44,6 +45,7 @@ class TestKloutIdentity(KloutBaseTest):
         result = k.identity.klout(tw='11158872')
         self.assertIn('id', result)
         self.assertIn('network', result)
+        time.sleep(1)
 
     def test_identity_by_google_plus(self):
         """
@@ -57,6 +59,7 @@ class TestKloutIdentity(KloutBaseTest):
         result = k.identity.klout(gp='112975106809988327760')
         self.assertIn('id', result)
         self.assertIn('network', result)
+        time.sleep(1)
 
     def test_identity_by_twitter_name(self):
         """
@@ -66,6 +69,7 @@ class TestKloutIdentity(KloutBaseTest):
         result = k.identity.klout(screenName='erfaan')
         self.assertIn('id', result)
         self.assertIn('network', result)
+        time.sleep(1)
 
     def test_google_plus_by_identity(self):
         """
@@ -79,6 +83,7 @@ class TestKloutIdentity(KloutBaseTest):
         result = k.identity.gp(klout='11747')
         self.assertIn('id', result)
         self.assertIn('network', result)
+        time.sleep(1)
 
     def test_twitter_id_by_identity(self):
         """
@@ -92,6 +97,7 @@ class TestKloutIdentity(KloutBaseTest):
         result = k.identity.tw(klout='11747')
         self.assertIn('id', result)
         self.assertIn('network', result)
+        time.sleep(1)
 
 
 class TestKloutUser(KloutBaseTest):
@@ -113,6 +119,7 @@ class TestKloutUser(KloutBaseTest):
         self.assertIn('score', result)
         self.assertLess(result['score'], 100.0)
         self.assertGreater(result['score'], 0.0)
+        time.sleep(1)
 
     def test_user_influence(self):
         """
@@ -126,6 +133,7 @@ class TestKloutUser(KloutBaseTest):
         result = k.user.influence(kloutId='11747')
         self.assertIn('myInfluencers', result)
         self.assertIn('myInfluencees', result)
+        time.sleep(1)
 
     def test_user_topics(self):
         """
@@ -145,6 +153,7 @@ class TestKloutUser(KloutBaseTest):
             for key in ['displayName', 'displayType', 'id',
                         'imageUrl', 'name', 'slug']:
                 self.assertIn(key, topic.keys())
+        time.sleep(1)
 
 
 class TestTimeout(KloutBaseTest):
@@ -162,6 +171,7 @@ class TestTimeout(KloutBaseTest):
 
         with self.assertRaises(KloutHTTPError):
             result = k.user.score(kloutId=11747, timeout=0.001)
+        time.sleep(1)
 
 
 class TestSecure(KloutBaseTest):
@@ -175,6 +185,7 @@ class TestSecure(KloutBaseTest):
         k = Klout(self.key, secure=True)
         result = k.user.score(kloutId=11747)
         self.assertIn('score', result)
+        time.sleep(1)
 
 
 if __name__ == '__main__':
