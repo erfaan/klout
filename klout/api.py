@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-A minimalist klout API interface. Use of this API 
+A minimalist klout API interface. Use of this API
 requires klout *developer key*. You can get registered and
 get a key at
 
@@ -14,13 +14,14 @@ Quickstart
 ====================
 
 Install the PyPi package::
-    
+
     pip install Klout
 
-This short example shows how to get a kloutId first and fetch user's score using that kloutId::
+This short example shows how to get a kloutId first and fetch user's score
+using that kloutId::
 
     from klout import *
-    
+
     # Make the Klout object
     k = Klout('YOUR_KEY_HERE')
 
@@ -30,8 +31,8 @@ This short example shows how to get a kloutId first and fetch user's score using
     # Get klout score of the user
     score = k.user.score(kloutId=kloutId).get('score')
 
-    print "User's klout score is: %s" % (score) 
-    
+    print "User's klout score is: %s" % (score)
+
     # Optionally a timeout parameter (seconds) can also be sent with all calls
     score = k.user.score(kloutId=kloutId, timeout=5).get('score')
 
@@ -43,9 +44,9 @@ try:
     import urllib.error as urllib_error
     import urllib.parse as urllib_parse
 except ImportError:
+    import urllib as urllib_parse
     import urllib2 as urllib_request
     import urllib2 as urllib_error
-    import urllib as urllib_parse
 
 try:
     from cStringIO import StringIO
@@ -61,43 +62,49 @@ except ImportError:
 
 import socket
 
-class _DEFAULT(object):
+
+class _DEFAULT(object):  # pylint: disable=too-few-public-methods
     pass
 
 
-class KloutError( Exception ):
+class KloutError(Exception):
     """
     Base Exception thrown by Klout object when there is a
     general error interacting with the API.
     """
 
-    def __init__(self, e):
-        self.e = e
+    def __init__(self, errors):
+        self.errors = errors
+        super(KloutError, self).__init__(errors)
 
     def __str__(self):
         return repr(self)
 
     def __repr__(self):
-        return ( "ERROR: %s" % self.e )
+        return "ERROR: %s" % self.errors
 
 
-class KloutHTTPError( KloutError ):
+class KloutHTTPError(KloutError):
     """
     Exception thrown by Klout object when there is an
     HTTP error interacting with api.klout.com.
     """
 
-    def __init__( self, e, uri ):
-        self.e = e
+    def __init__(self, errors, uri):
         self.uri = uri
+        super(KloutHTTPError, self).__init__(errors)
 
 
-class KloutCall( object ):
+# pylint: disable=too-few-public-methods
+class KloutCall(object):
+    """
+    Klout interface base class.
+    """
+    # pylint: disable=too-many-arguments
+    def __init__(self, key, domain,
+                 callable_cls, api_version="",
+                 uri="", uriparts=None, secure=False):
 
-    def __init__(self, key, domain, 
-        callable_cls, api_version = "", 
-        uri = "", uriparts = None, secure=False):
-        
         self.key = key
         self.domain = domain
         self.api_version = api_version
@@ -107,10 +114,16 @@ class KloutCall( object ):
         self.uriparts = uriparts
 
     def __getattr__(self, k):
+        """
+        Generic Attribute Handler
+        """
         try:
             return object.__getattr__(self, k)
         except AttributeError:
             def extend_call(arg):
+                """
+                Extend the method call
+                """
                 return self.callable_cls(
                     key=self.key, domain=self.domain,
                     api_version=self.api_version,
@@ -118,58 +131,57 @@ class KloutCall( object ):
                     uriparts=self.uriparts + (arg,))
             if k == "_":
                 return extend_call
-            else:
-                return extend_call(k)
+            return extend_call(k)
 
     def __call__(self, **kwargs):
         # Build the uri.
         uriparts = []
         api_version = self.api_version
         resource = "%s.json" % self.uriparts[0]
-        
+
         uriparts.append(api_version)
         uriparts.append(resource)
-        
+
         params = {}
         if self.key:
             params['key'] = self.key
-        
+
         timeout = kwargs.pop('timeout', None)
-        
+
         # append input variables
-        for k, v in kwargs.items():
-            if k == 'screenName':
+        for key, value in kwargs.items():
+            if key == 'screenName':
                 uriparts.append('twitter')
-                params[k] = v
-            elif k == 'kloutId':
-                uriparts.append(str(v))
+                params[key] = value
+            elif key == 'kloutId':
+                uriparts.append(str(value))
             else:
-                uriparts.append(k)
-                uriparts.append(str(v))
-        
+                uriparts.append(key)
+                uriparts.append(str(value))
+
         for uripart in self.uriparts[1:]:
             if not uripart == 'klout':
                 uriparts.append(str(uripart))
-        
+
         uri = '/'.join(uriparts)
-        if len(params) > 0:
+        if params > 0:
             uri += '?' + urllib_parse.urlencode(params)
-        
+
         secure_str = ''
         if self.secure:
             secure_str = 's'
-        
-        uriBase = "http%s://%s/%s" % (
+
+        uri_base = "http%s://%s/%s" % (
             secure_str, self.domain, uri)
-        
+
         headers = {'Accept-Encoding': 'gzip'}
-        
-        req = urllib_request.Request(uriBase, headers=headers)
-        
+
+        req = urllib_request.Request(uri_base, headers=headers)
+
         return self._handle_response(req, uri, timeout)
-    
+
+    # pylint: disable=no-self-use
     def _handle_response(self, req, uri, timeout=None):
-        kwargs = {}
         if timeout:
             socket.setdefaulttimeout(timeout)
         try:
@@ -177,22 +189,23 @@ class KloutCall( object ):
             if handle.info().get('Content-Encoding') == 'gzip':
                 # Handle gzip decompression
                 buf = StringIO(handle.read())
-                f = gzip.GzipFile(fileobj=buf)
-                data = f.read()
+                zip_file = gzip.GzipFile(fileobj=buf)
+                data = zip_file.read()
             else:
                 data = handle.read()
-            
+
             res = json.loads(data.decode('utf8'))
             return res
-        except urllib_error.HTTPError:
+        except (urllib_error.HTTPError, urllib_error.URLError):
             import sys
-            _, e, _ = sys.exc_info()
-            raise KloutHTTPError( e, uri)
+            _, errors, _ = sys.exc_info()
+            raise KloutHTTPError(errors, uri)
 
 
+# pylint: disable=too-few-public-methods
 class Klout(KloutCall):
     """
-    A minimalist yet fully featured klout API interface. 
+    A minimalist yet fully featured klout API interface.
 
     Get RESTful data by accessing members of this class. The result
     is decoded python objects (dicts and lists).
@@ -208,42 +221,44 @@ class Klout(KloutCall):
     >>> f = open('key')
     >>> key= f.readline().strip()
     >>> f.close()
-    
+
     By default all communication with Klout API is not secure (HTTP).
     It can be made secure (HTTPS) by passing an optional `secure=True`
     to `Klout` constructor like this:
-    
+
     >>> k = Klout(key, secure=True)
-    
+
     **Identity Resource**
-    
-    All calls to the Klout API now require a unique kloutId. 
-    To facilitate this, you must first translate a {network}/{networkId} into a kloutId.
-    
+
+    All calls to the Klout API now require a unique kloutId.
+    To facilitate this, you must first translate a {network}/{networkId}
+    into a kloutId.
+
     * Get kloutId by twitter id
 
     >>> k.identity.klout(tw="11158872")
     {u'id': u'11747', u'network': u'ks'}
-    
+
     * Get kloutId by twitter screenName
 
     >>> k.identity.klout(screenName="erfaan")
     {u'id': u'11747', u'network': u'ks'}
-    
+
     * Get kloutId by google plus id
 
     >>> k.identity.klout(gp="112975106809988327760")
     {u'id': u'11747', u'network': u'ks'}
-    
+
     **User Resource**
 
-    Once we have kloutId, we can use this resource to lookup user's score, influcent or topics
+    Once we have kloutId, we can use this resource to lookup user's score,
+    influcent or topics
 
     * Get user score
 
     >>> k.user.score(kloutId='11747') # doctest: +ELLIPSIS
     ...                               # doctest: +NORMALIZE_WHITESPACE
-    {u'score': ..., u'scoreDelta': {u'dayChange': ..., u'monthChange': ...}} 
+    {u'score': ..., u'scoreDelta': {u'dayChange': ..., u'monthChange': ...}}
 
     * Get user influences
 
@@ -257,13 +272,13 @@ class Klout(KloutCall):
 
     >>> k.user.topics(kloutId='11747') # doctest: +ELLIPSIS
     ...                                # doctest: +NORMALIZE_WHITESPACE
-    [{u'displayName': ..., u'name': ..., u'imageUrl': ..., u'id': ..., u'topicType': ..., u'slug': ...}, ...]
+    [{u'displayName': ..., u'name': ..., u'imageUrl': ..., u'id': ..., \
+    u'displayType': ..., u'slug': ...}, ...]
 
     """
 
-    def __init__(
-        self, key, domain="api.klout.com", secure=False,
-        api_version=_DEFAULT):
+    def __init__(self, key, domain="api.klout.com", secure=False,
+                 api_version=_DEFAULT):
         """
         Create a new klout API connector.
 
@@ -285,8 +300,8 @@ class Klout(KloutCall):
             api_version = "v2"
 
         KloutCall.__init__(
-            self, key=key, domain = domain, 
-            api_version = api_version,
+            self, key=key, domain=domain,
+            api_version=api_version,
             callable_cls=KloutCall, secure=secure,
             uriparts=())
 

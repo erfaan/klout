@@ -1,22 +1,26 @@
-from setuptools import setup
+"""
+Setups the Klout API Interface Library
+"""
 import re
 import sys
 
-verstr = "unknown"
+from setuptools import setup
+
+version_str = "unknown"
 try:
-    verstrline = open('klout/_version.py', "rt").read()
+    version_str_line = open('klout/_version.py', "rt").read()
 except EnvironmentError:
-    pass # Okay, there is no version file.
+    pass  # Okay, there is no version file.
 else:
     VSRE = r"^__release__ = ['\"]([^'\"]*)['\"]"
-    mo = re.search(VSRE, verstrline, re.M)
+    mo = re.search(VSRE, version_str_line, re.M)
     if mo:
-        verstr = mo.group(1)
+        version_str = mo.group(1)
     else:
         raise RuntimeError("unable to find version in yourpackage/_version.py")
 
 INSTALL_REQUIRES = []
-if sys.version_info < (2 , 6):
+if sys.version_info < (2, 6):
     INSTALL_REQUIRES = ['simplejson']
 
 TEST_REQUIRE = ['nose', 'unittest2']
@@ -25,7 +29,7 @@ if sys.version_info >= (3, 0):
 
 setup(
     name='Klout',
-    version=verstr,
+    version=version_str,
     author='Irfan Ahmad',
     author_email='klout@i.com.pk',
     packages=['klout'],
